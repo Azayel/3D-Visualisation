@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/Visual3D.dir/src/Shader.cpp.o CMakeFiles/Visual3D.dir/src/main.cpp.o CMakeFiles/Visual3D.dir/src/glad.c.o -o Visual3D   -L/home/asayel/Documents/GitHub/3D-Visualisation/libs/glfw  -Wl,-rpath,/home/asayel/Documents/GitHub/3D-Visualisation/libs/glfw -lglfw -ldl 

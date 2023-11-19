@@ -1,3 +1,0 @@
-/home/asayel/Documents/GitHub/3D-Visualisation/build/CMakeFiles/Visual3D.dir
-/home/asayel/Documents/GitHub/3D-Visualisation/build/CMakeFiles/edit_cache.dir
-/home/asayel/Documents/GitHub/3D-Visualisation/build/CMakeFiles/rebuild_cache.dir

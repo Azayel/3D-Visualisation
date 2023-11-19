@@ -1,4 +1,6 @@
+#include "../includes/CubeRenderer.h"
 #include "../includes/Shader.h"
+#include "../includes/vloop.h"
 #include <algorithm>
 #include <glad/glad.h>
 
@@ -10,14 +12,19 @@
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
+// TEMPORARY SHADER POINTER SHOULD BE MOVED LATER IN SEPERATE CUBE HANDLER
+std::unique_ptr<Shader> myShader;
+
+// IMPORTANT VARIABLES FOR THE window
+
+GLFWwindow *window;
+CubeRenderer crender;
+
+// SCREEN WIDTH AND HEIGHT
 const unsigned int SCR_WIDTH = 1000;
 const unsigned int SCR_HEIGHT = 1000;
 
-std::unique_ptr<Shader> myShader;
-
-int main() {
-  // glfw: initialize and configure
-  // ------------------------------
+bool initialize_window_components() {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -29,13 +36,12 @@ int main() {
 
   // glfw window creation
   // --------------------
-  GLFWwindow *window =
-      glfwCreateWindow(1000, 1000, "Definetly not a window", NULL, NULL);
+  window = glfwCreateWindow(1000, 1000, "Definetly not a window", NULL, NULL);
 
   if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
-    return -1;
+    return false;
   }
   glfwMakeContextCurrent(window);
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -44,6 +50,20 @@ int main() {
   // ---------------------------------------
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+void draw() { crender.draw(); }
+
+int main() {
+  // glfw: initialize and configure
+  // ------------------------------
+
+  if (!initialize_window_components()) {
+    std::cout << "ERROR AT INITIALIZING THE WINDOW COMPONENT ABORTING!\n";
     return -1;
   }
 
@@ -51,37 +71,12 @@ int main() {
 
   myShader = std::unique_ptr<Shader>(new Shader(
       "../resources/VertexShader.glsl", "../resources/FramgmentShader.glsl"));
+
+  crender.on_initialize("../resources/VertexShader.glsl",
+                        "../resources/FramgmentShader.glsl");
+
   // set up vertex data (and buffer(s)) and configure vertex attributes
   // ------------------------------------------------------------------
-  float vertices[] = {
-      -0.5f, -0.5f, 0.0f, // left
-      0.5f,  -0.5f, 0.0f, // right
-      0.0f,  0.5f,  0.0f  // top
-  };
-
-  unsigned int VBO, VAO;
-  glGenVertexArrays(1, &VAO);
-  glGenBuffers(1, &VBO);
-  // bind the Vertex Array Object first, then bind and set vertex buffer(s), and
-  // then configure vertex attributes(s).
-  glBindVertexArray(VAO);
-
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-
-  // note that this is allowed, the call to glVertexAttribPointer registered VBO
-  // as the vertex attribute's bound vertex buffer object so afterwards we can
-  // safely unbind
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-  // You can unbind the VAO afterwards so other VAO calls won't accidentally
-  // modify this VAO, but this rarely happens. Modifying other VAOs requires a
-  // call to glBindVertexArray anyways so we generally don't unbind VAOs (nor
-  // VBOs) when it's not directly necessary.
-  glBindVertexArray(0);
 
   // uncomment this call to draw in wireframe polygons.
   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -99,12 +94,8 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // draw our first triangle
-    glUseProgram(myShader->getID());
-    glBindVertexArray(
-        VAO); // seeing as we only have a single VAO there's no need to bind it
-              // every time, but we'll do so to keep things a bit more organized
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    // glBindVertexArray(0); // no need to unbind it every time
+
+    draw();
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved
     // etc.)
@@ -115,10 +106,7 @@ int main() {
 
   // optional: de-allocate all resources once they've outlived their purpose:
   // ------------------------------------------------------------------------
-  glDeleteVertexArrays(1, &VAO);
-  glDeleteBuffers(1, &VBO);
-  glDeleteProgram(myShader->getID());
-
+  crender.destroy_cuberenderer();
   // glfw: terminate, clearing all previously allocated GLFW resources.
   // ------------------------------------------------------------------
   glfwTerminate();

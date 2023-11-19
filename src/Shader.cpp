@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-Shader::Shader(const char *vertexPath, const char *framgentPath) {
+Shader::Shader(const std::string vertexPath, const std::string framgentPath) {
   // 1. Retrieve the vertex/fragment source code from file path
 
   std::string vertexCode;

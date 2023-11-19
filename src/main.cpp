@@ -1,20 +1,25 @@
-#include "../includes/CubeRenderer.h"
-#include "../includes/Shader.h"
-#include "../includes/vloop.h"
+
 #include <algorithm>
 #include <glad/glad.h>
 
 #include <iostream>
 
 #include <GLFW/glfw3.h>
+#include <chrono>
 #include <memory>
+#include <sys/types.h>
+#include <thread>
+
+#include "../includes/CubeRenderer.h"
+#include "../includes/Shader.h"
+#include "../includes/vloop.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
 // TEMPORARY SHADER POINTER SHOULD BE MOVED LATER IN SEPERATE CUBE HANDLER
 std::unique_ptr<Shader> myShader;
-
+u_int64_t current;
 // IMPORTANT VARIABLES FOR THE window
 
 GLFWwindow *window;
@@ -79,7 +84,7 @@ int main() {
   // ------------------------------------------------------------------
 
   // uncomment this call to draw in wireframe polygons.
-  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   // render loop
   // -----------
@@ -95,11 +100,14 @@ int main() {
 
     // draw our first triangle
 
+    // uint64_t current = glfwGetTimerValue();
     draw();
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved
     // etc.)
     // -------------------------------------------------------------------------------
+    //
+
     glfwSwapBuffers(window);
     glfwPollEvents();
   }

@@ -1,16 +1,45 @@
-#pragma once
 #include "../includes/CubeRenderer.h"
-#include <memory>
+#include <GLFW/glfw3.h>
+#include <glm/ext/matrix_transform.hpp>
 
-void CubeRenderer::on_initialize(char *vertexfn, char *fragmentfn) {
+void CubeRenderer::on_initialize(std::string vertexfn, std::string fragmentfn) {
   CubeShader = std::unique_ptr<Shader>(new Shader(vertexfn, fragmentfn));
 
+  model = glm::mat4(1.0f);
+  view = glm::mat4(1.0f);
+  projection = glm::mat4(1.0f);
+  model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+  view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+  projection =
+      glm::perspective(glm::radians(45.0f), 1000.0f / 1000.0f, 0.1f, 100.0f);
   // TEMPORARY TO GET THIS CLASS WORKING
   // TODO ADD VBO AND VAO VARIABLES
+  /*
   float vertices[] = {
       -0.5f, -0.5f, 0.0f, // left
       0.5f,  -0.5f, 0.0f, // right
       0.0f,  0.5f,  0.0f  // top
+  };
+  */
+
+  float vertices[] = {
+      -0.5f, -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, 0.5f,  0.5f,  -0.5f,
+      0.5f,  0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, -0.5f, -0.5f,
+
+      -0.5f, -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  0.5f,  0.5f,
+      0.5f,  0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  -0.5f, -0.5f, 0.5f,
+
+      -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  -0.5f, -0.5f, -0.5f, -0.5f,
+      -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f,  -0.5f, 0.5f,  0.5f,
+
+      0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  -0.5f, 0.5f,  -0.5f, -0.5f,
+      0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, 0.5f,  0.5f,  0.5f,  0.5f,
+
+      -0.5f, -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, 0.5f,
+      0.5f,  -0.5f, 0.5f,  -0.5f, -0.5f, 0.5f,  -0.5f, -0.5f, -0.5f,
+
+      -0.5f, 0.5f,  -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  0.5f,
+      0.5f,  0.5f,  0.5f,  -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f,  -0.5f,
   };
 
   glGenVertexArrays(1, &VAO);
@@ -39,10 +68,23 @@ void CubeRenderer::on_initialize(char *vertexfn, char *fragmentfn) {
 
 void CubeRenderer::draw() {
   glUseProgram(CubeShader->getID());
+
+  model = glm::rotate(model, ((float)sin((float)glfwGetTime()) / 80.0f),
+                      glm::vec3(0.5f, 1.0f, 0.0f));
+
+  int uniformLocation = glGetUniformLocation(CubeShader->getID(), "model");
+  glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+  uniformLocation = glGetUniformLocation(CubeShader->getID(), "view");
+  glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+  uniformLocation = glGetUniformLocation(CubeShader->getID(), "projection");
+  glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
   glBindVertexArray(
       VAO); // seeing as we only have a single VAO there's no need to bind it
             // every time, but we'll do so to keep things a bit more organized
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glDrawArrays(GL_TRIANGLES, 0, 36);
   // glBindVertexArray(0); // no need to unbind it every time
 }
 

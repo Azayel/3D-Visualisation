@@ -17,6 +17,8 @@ class Camera{
     glm::vec3 c_position;
     glm::vec3 c_view_target;
     glm::vec3 lookUp;
+    float yaw = -90.0f;
+    float pitch = 0.0f;
 
 
 
@@ -40,6 +42,29 @@ class Camera{
         if(direction == RIGHT) c_position -= glm::normalize(glm::cross(c_view_target, lookUp)) * (2.5f * deltaTime);
         if(direction == LEFT) c_position += glm::normalize(glm::cross(c_view_target, lookUp)) * (2.5f * deltaTime) ;
 
+    }
+
+
+    void process_mouse(float xoffset, float yoffset){
+
+        const float sensitivity = 0.1f;
+        xoffset *= sensitivity;
+        yoffset *= sensitivity;
+
+
+        yaw   += xoffset;
+        pitch += yoffset;
+
+         if(pitch > 89.0f)
+        pitch = 89.0f;
+        if(pitch < -89.0f)
+            pitch = -89.0f;
+
+        glm::vec3 direction;
+        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        direction.y = sin(glm::radians(pitch));
+        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        c_view_target = glm::normalize(direction);
     }
 
 };

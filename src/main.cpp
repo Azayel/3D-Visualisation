@@ -17,7 +17,7 @@
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
-
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 std::unique_ptr<Shader> myShader;
 std::shared_ptr<Camera> myCamera;
@@ -33,6 +33,8 @@ CubeRenderer crender;
 int SCR_WIDTH = 1000;
 int SCR_HEIGHT = 1000;
 
+float lastx = 500;
+float lasty = 500;
 
 //TIME SINCE LAST DRAW CALL
 
@@ -61,7 +63,8 @@ bool initialize_window_components() {
   }
   glfwMakeContextCurrent(window);
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+  glfwSetCursorPosCallback(window, mouse_callback);  
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
   // glad: load all OpenGL function pointers
   // ---------------------------------------
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -156,4 +159,13 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   SCR_HEIGHT = height;
   SCR_WIDTH = width;
   glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos){
+  float xoffset = xpos - lastx;
+  float yoffset = lasty - ypos; // reversed since y-coordinates range from bottom to top
+  myCamera.get()->process_mouse((xpos - lastx), (lasty - ypos));
+  lastx = xpos;
+  lasty = ypos;  
+
 }

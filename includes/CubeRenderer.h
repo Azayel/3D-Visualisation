@@ -1,5 +1,6 @@
 #pragma once
 #include "../includes/Shader.h"
+#include "../includes/Camera.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -14,9 +15,10 @@ class CubeRenderer {
   glm::mat4 projection;
   glm::mat4 model;
   glm::mat4 view;
+  std::shared_ptr<Camera> my_camera;
 
 public:
-  void on_initialize(std::string vertexShader, std::string fragmentShader);
+  void on_initialize(std::string vertexShader, std::string fragmentShader, std::shared_ptr<Camera>& camera);
   void draw();
   void destroy_cuberenderer();
 };

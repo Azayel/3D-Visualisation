@@ -11,7 +11,7 @@ enum Camera_Movement {
 };
 
 
-class Camera{
+struct Camera{
     
     //Initialize Initial CameraPosition and camara Matrice
     glm::vec3 c_position;
@@ -65,6 +65,11 @@ class Camera{
         direction.y = sin(glm::radians(pitch));
         direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
         c_view_target = glm::normalize(direction);
+    }
+
+
+    const glm::vec3 get_camera_position(){
+        return c_position;
     }
 
 };

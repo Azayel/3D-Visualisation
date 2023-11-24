@@ -12,19 +12,35 @@
 class CubeRenderer {
   std::unique_ptr<Shader> CubeShader;
   unsigned int VAO, VBO;
+  unsigned int rVAO, rVBO;
   glm::mat4 projection;
   glm::mat4 model;
   glm::mat4 view;
   std::shared_ptr<Camera> my_camera;
+  unsigned int textureID;
+  std::vector<float> rays;
+
+std::vector<glm::vec3> cubes;
 
 public:
+  
   void on_initialize(std::string vertexShader, std::string fragmentShader, std::shared_ptr<Camera>& camera);
   void draw();
   void destroy_cuberenderer();
+  void gen_cubes(int count){
+    for(float z = 0.0f; z<count; z+=1.0f){
+      for(float x = 0.0f; x < count; x+=1.0f){
+        cubes.insert(cubes.end(), {glm::vec3(x,0.0f,z)});
+      }
+    }
+  }
+
+
+  const glm::mat4 get_projection() const{
+    return projection;
+  }
+
+  void insert_ray(glm::vec3 from, glm::vec3 to);
+
 };
 
-struct Cube {
-  std::vector<glm::vec3> vertices;
-
-  void initialize_cube(std::vector<glm::vec3> v) { vertices = v; }
-};

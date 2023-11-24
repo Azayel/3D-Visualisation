@@ -178,33 +178,35 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos){
 
 
 
-glm::vec3 positions_to_world_from_screen(glm::vec3 coord) {
+glm::vec3 positions_to_world_from_screen(glm::vec2 coord) {
     //VIEW PORT SPACE
 
     //TRANSFORMING INTO NORMALIZED DEVICE COORDINATES
     glm::vec3 ndc_vec3 = glm::vec3(((2.0f * coord.x) / SCR_WIDTH - 1.0f), (1.0f - (2.0f * coord.y) / SCR_HEIGHT), 1.0f);
     
     //TRANSFORMING INTO HOMOHENOUS COORDINATES
-    glm::vec4 homogeneous_ndc_vec4 = glm::vec4(ndc_vec3, 1.0f); //1.0f Due to beeing a position in space
+    glm::vec4 homogeneous_ndc_vec4 = glm::vec4(ndc_vec3, 0.0f); //1.0f Due to beeing a position in space
 
     //APPLYING THE INVERSE PROJECTION MATRICE TO TRANSFORM COORDINATES FROM HOMOGENOUS CLIP SPACE ----> EYE SPACE
     glm::vec4 inverse_projection_point = glm::inverse(crender.get_projection()) * homogeneous_ndc_vec4;
     
     //NOW WE NEED TO UNPROJECT ONLY X AND Y PARTS. W WILL BE 0 FOR DIRECTION AND Z WILL BE -1 TO POINT "FORWARD"
     inverse_projection_point = glm::vec4(inverse_projection_point.x, inverse_projection_point.y, -1.0f, 0.0f);
-    glm::vec3 normalized_ray = glm::normalize(glm::vec3(inverse_projection_point.x, inverse_projection_point.y , inverse_projection_point.z));  
 
     //NOW WE NEED TO APPLY THE INVERSE VIEW MATRIX!
-/*
+
     glm::vec4 ray_world = glm::inverse(myCamera.get()->get_view_matrix()) * inverse_projection_point;
 
-    glm::vec3 normalized_ray = glm::normalize(glm::vec3(ray_world.x, ray_world.y , ray_world.z));    
-*/
+    glm::vec3 normalized_ray = glm::normalize(glm::vec3(ray_world.x, ray_world.y , - myCamera.get()->get_camera_position().z));    
+
 
     return normalized_ray;
 
 
 }
+
+
+
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
@@ -212,8 +214,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         double xp, yp;
         glfwGetCursorPos(window, &xp, &yp);
 
-        glm::vec3 direction = positions_to_world_from_screen(glm::vec3(xp,yp,0.0f));
-        
+        glm::vec3 direction = positions_to_world_from_screen(glm::vec2(xp,yp));
+        glm::vec3 altDir = myCamera.get()->c_position + myCamera.get()->c_view_target;
         glm::vec3 to_point = myCamera.get()->get_camera_position() + glm::vec3(50*direction.x,50*direction.y,50*direction.z);
 
         std::cout << "DIRECTION: " << direction.x << " " << direction.y << " " << direction.z << "\n";

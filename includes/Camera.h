@@ -17,6 +17,8 @@ struct Camera{
     glm::vec3 c_position;
     glm::vec3 c_view_target;
     glm::vec3 lookUp;
+    glm::vec3 Up;
+    glm::vec3 Right;
     float yaw = -90.0f;
     float pitch = 0.0f;
 
@@ -29,6 +31,7 @@ struct Camera{
         c_position = position;
         c_view_target = view_target;
         lookUp = lu;
+        updateCameraVectors();
     }
 
     //Return the view matrix
@@ -39,8 +42,8 @@ struct Camera{
     void Process_Keyboard(Camera_Movement direction, float deltaTime){
         if(direction == FORWARD) c_position += 2.5f * deltaTime * c_view_target;
         if(direction == BACKWARD) c_position -= 2.5f * deltaTime * c_view_target;
-        if(direction == RIGHT) c_position -= glm::normalize(glm::cross(c_view_target, lookUp)) * (2.5f * deltaTime);
-        if(direction == LEFT) c_position += glm::normalize(glm::cross(c_view_target, lookUp)) * (2.5f * deltaTime) ;
+        if(direction == RIGHT) c_position -= Right * (2.5f * deltaTime);
+        if(direction == LEFT) c_position += Right * (2.5f * deltaTime) ;
 
     }
 
@@ -60,16 +63,25 @@ struct Camera{
         if(pitch < -89.0f)
             pitch = -89.0f;
 
-        glm::vec3 direction;
-        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-        direction.y = sin(glm::radians(pitch));
-        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-        c_view_target = glm::normalize(direction);
+        updateCameraVectors();
     }
 
 
     const glm::vec3 get_camera_position(){
         return c_position;
+    }
+
+    void updateCameraVectors()
+    {
+        // calculate the new Front vector
+        glm::vec3 front;
+        front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        front.y = sin(glm::radians(pitch));
+        front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        c_view_target = glm::normalize(front);
+        // also re-calculate the Right and Up vector
+        Right = glm::normalize(glm::cross(c_view_target, lookUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+        Up    = glm::normalize(glm::cross(Right, c_view_target));
     }
 
 };

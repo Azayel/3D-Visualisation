@@ -73,7 +73,7 @@ void CubeRenderer::on_initialize(std::string vertexfn, std::string fragmentfn, s
     };
 
 
-    gen_cubes(1);
+    gen_cubes(4);
 
  
   //Cube Renderer Projection Matrix

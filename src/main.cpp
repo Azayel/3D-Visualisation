@@ -213,7 +213,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         double xp, yp;
         glfwGetCursorPos(window, &xp, &yp);
 
-        //glm::vec3 direction = positions_to_world_from_screen(glm::vec2(xp,yp));
+        
         //glm::vec3 altDir = myCamera.get()->c_position + myCamera.get()->c_view_target;
         //glm::vec3 to_point = myCamera.get()->get_camera_position() + glm::vec3(50*direction.x,50*direction.y,50*direction.z);
 
@@ -222,9 +222,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 
         glm::vec3 to_point = myCamera.get()->get_camera_position() + glm::vec3(50 * myCamera.get()->c_view_target.x, 50 * myCamera.get()->c_view_target.y , 50 * myCamera.get()->c_view_target.z);
+        
+        //THIS POSSIBLE ASWELL MOUSE IS ALWAYS IN CENTER SO ITS JUST EASIER WITHOUT THE CALCULATION JUST GET THE CAMREA POSITION AND USE THE VIEW DIRECTION
+        //glm::vec3 direction = positions_to_world_from_screen(glm::vec2(500,500));
+        //glm::vec3 to_point = myCamera.get()->get_camera_position() + glm::vec3(50 * direction.x, 50 * direction.y , 50 * direction.z);
 
-
-        //std::cout << "DIRECTION: " << direction.x << " " << direction.y << " " << direction.z << "\n";
         std::cout << "Clicked Ray From Point X: " << myCamera.get()->get_camera_position().x << " Y: " << myCamera.get()->get_camera_position().y << " Z: " << myCamera.get()->get_camera_position().z << " To Point X: " << to_point.x << " Y: " << to_point.y << " z: " << to_point.z << "\n";
 
         crender.insert_ray(myCamera.get()->get_camera_position(),to_point);

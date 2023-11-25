@@ -45,6 +45,7 @@ struct Camera{
         if(direction == RIGHT) c_position -= Right * (2.5f * deltaTime);
         if(direction == LEFT) c_position += Right * (2.5f * deltaTime) ;
 
+
     }
 
 

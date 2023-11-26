@@ -29,42 +29,42 @@ void CubeRenderer::on_initialize(std::string vertexfn, std::string fragmentfn, s
 
 
   float vertices[] = {
-        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,1.0f, 0.0f, 0.0f, //BACK
          0.5f, -0.5f, -0.5f,1.0f, 0.0f, 0.0f,
          0.5f,  0.5f, -0.5f,1.0f, 0.0f, 0.0f,
          0.5f,  0.5f, -0.5f,1.0f, 0.0f, 0.0f,
         -0.5f,  0.5f, -0.5f,1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,1.0f, 0.0f, 0.0f, 
 
-        -0.5f, -0.5f,  0.5f,0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,0.0f, 1.0f, 0.0f, //Front
          0.5f, -0.5f,  0.5f,0.0f, 1.0f, 0.0f,
          0.5f,  0.5f,  0.5f,0.0f, 1.0f, 0.0f,
          0.5f,  0.5f,  0.5f,0.0f, 1.0f, 0.0f,
         -0.5f,  0.5f,  0.5f,0.0f, 1.0f, 0.0f,
         -0.5f, -0.5f,  0.5f,0.0f, 1.0f, 0.0f,
 
-        -0.5f,  0.5f,  0.5f,0.0f, 0.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,0.0f, 0.0f, 1.0f, //LEFT SIDE
         -0.5f,  0.5f, -0.5f,0.0f, 0.0f, 1.0f,
         -0.5f, -0.5f, -0.5f,0.0f, 0.0f, 1.0f,
         -0.5f, -0.5f, -0.5f,0.0f, 0.0f, 1.0f,
         -0.5f, -0.5f,  0.5f,0.0f, 0.0f, 1.0f,
         -0.5f,  0.5f,  0.5f,0.0f, 0.0f, 1.0f,
 
-         0.5f,  0.5f,  0.5f,1.0f, 1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,1.0f, 1.0f, 0.0f, //RIGHT SIDE
          0.5f,  0.5f, -0.5f,1.0f, 1.0f, 0.0f,
          0.5f, -0.5f, -0.5f,1.0f, 1.0f, 0.0f,
          0.5f, -0.5f, -0.5f,1.0f, 1.0f, 0.0f,
          0.5f, -0.5f,  0.5f,1.0f, 1.0f, 0.0f,
          0.5f,  0.5f,  0.5f,1.0f, 1.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f,1.0f, 0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,1.0f, 0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,1.0f, 0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,1.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, //BOTTOM
+         0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
 
-        -0.5f,  0.5f, -0.5f,0.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,0.0f, 1.0f, 1.0f, //TOP
          0.5f,  0.5f, -0.5f,0.0f, 1.0f, 1.0f,
          0.5f,  0.5f,  0.5f,0.0f, 1.0f, 1.0f,
          0.5f,  0.5f,  0.5f,0.0f, 1.0f, 1.0f,
@@ -146,6 +146,30 @@ void CubeRenderer::draw() {
 
 }
 
+//https://gist.github.com/DomNomNom/46bb1ce47f68d255fd5d
+//https://www.sciencedirect.com/topics/computer-science/aligned-bounding-box
+//https://gamedev.stackexchange.com/questions/18436/most-efficient-aabb-vs-ray-collision-algorithms
+bool AABB(const glm::vec3& local_ray_origin, const glm::vec3& local_ray_direction) {
+  //Bounding Box
+    glm::vec3 min_bound = glm::vec3(-0.5f, -0.5f, -0.5f);
+    glm::vec3 max_bound = glm::vec3(0.5f, 0.5f, 0.5f);
+
+    //Compute t-values for each pair of planes
+    // Point = Origin + t * direction | - Origin
+    // Point - Origin = t * direction | : Directopm
+    // (Point -  Origin) / Directiom = t
+    glm::vec3 t_min = (min_bound - local_ray_origin) / local_ray_direction;
+    glm::vec3 t_max = (max_bound - local_ray_origin) / local_ray_direction;
+    
+
+    //WHY?
+    float t_enter = glm::max(glm::max(glm::min(t_min.x, t_max.x), glm::min(t_min.y, t_max.y)), glm::min(t_min.z, t_max.z));
+    float t_exit = glm::min(glm::min(glm::max(t_min.x, t_max.x), glm::max(t_min.y, t_max.y)), glm::max(t_min.z, t_max.z));
+
+    // Check if the ray intersects the box
+    return t_enter < t_exit;
+}
+
 
 void CubeRenderer::insert_ray(glm::vec3 from, glm::vec3 to){
   
@@ -155,6 +179,42 @@ void CubeRenderer::insert_ray(glm::vec3 from, glm::vec3 to){
   glBufferData(GL_ARRAY_BUFFER, rays.size() * sizeof(float), rays.data(), GL_STATIC_DRAW);
   std::cout << "Size: " << rays.size() << "\n";
   glBindVertexArray(0);
+
+  glm::vec3 direction = my_camera.get()->c_view_target;
+  //cubes is translation of the original cube
+  for(glm::vec3 pos: cubes){
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, pos);
+    glm::mat4 modelInverse = glm::inverse(model);
+
+
+    glm::vec3 local_ray_origin = modelInverse * glm::vec4(from.x,from.y,from.z,1.0f);
+    glm::vec3 local_ray_direction = modelInverse * glm::vec4(direction.x,direction.y,direction.z,0.0f);
+
+    bool flag = false;
+    //for each side
+    if (AABB(local_ray_origin, local_ray_direction)) {
+        // Perform more accurate intersection tests with the cube's faces
+        // ...
+        std::cout << "intersection!\n";
+        flag = true;
+        // If there is an intersection, update your closest_cube and closest_distance variables
+        // ...
+    }
+
+    if(flag){
+      for(int i = 0; i<cubes.size();i++){
+        if(pos == cubes[i]){
+          cubes[i] = glm::vec3(cubes[i].x,cubes[i].y +=1,cubes[i].z);
+        }
+      }
+
+    }
+
+
+  }
+
+
 }
 
 void CubeRenderer::destroy_cuberenderer() {

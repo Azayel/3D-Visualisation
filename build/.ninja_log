@@ -1,6 +1,0 @@
-# ninja log v5
-3	123	1700921778905000360	CMakeFiles/Visual3D.dir/src/glad.c.o	d1fd66624c3e53e
-3	288	1700921779068333698	CMakeFiles/Visual3D.dir/src/Shader.cpp.o	83f73cb57dbe1a8a
-1	1034	1700942980045741603	CMakeFiles/Visual3D.dir/src/CubeRenderer.cpp.o	33cf5ea901495708
-1034	1084	1700942980095741603	Visual3D	4b61bd0061a367a9
-1	671	1700938723222260299	CMakeFiles/Visual3D.dir/src/main.cpp.o	ada2e76758946921

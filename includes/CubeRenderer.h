@@ -11,6 +11,7 @@
 
 class CubeRenderer {
   std::unique_ptr<Shader> CubeShader;
+  std::unique_ptr<Shader> RayShader;
   unsigned int VAO, VBO;
   unsigned int rVAO, rVBO;
   glm::mat4 projection;
@@ -19,6 +20,7 @@ class CubeRenderer {
   std::shared_ptr<Camera> my_camera;
   unsigned int textureID;
   std::vector<float> rays;
+  glm::vec3 lightPosition = glm::vec3(0.0f,10.0f,0.0f);
 
 std::vector<glm::vec3> cubes;
 

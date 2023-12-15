@@ -23,7 +23,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 std::unique_ptr<Shader> myShader;
 std::shared_ptr<Camera> myCamera;
 
-u_int64_t current;
+//u_int64_t current;
 // IMPORTANT VARIABLES FOR THE window
 
 GLFWwindow *window;
@@ -31,8 +31,8 @@ CubeRenderer crender;
 
 // SCREEN WIDTH AND HEIGHT
 
-int SCR_WIDTH = 1000;
-int SCR_HEIGHT = 1000;
+int SCR_WIDTH = 2000;
+int SCR_HEIGHT = 2000;
 
 float lastx = 500;
 float lasty = 500;
@@ -55,7 +55,7 @@ bool initialize_window_components() {
 
   // glfw window creation
   // --------------------
-  window = glfwCreateWindow(1000, 1000, "Definetly not a window", NULL, NULL);
+  window = glfwCreateWindow(2000, 2000, "Definetly not a window", NULL, NULL);
 
   if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;

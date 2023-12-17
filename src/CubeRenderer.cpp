@@ -62,7 +62,7 @@ void CubeRenderer::on_initialize(std::string vertexfn, std::string fragmentfn, s
   //model = glm::rotate(glm::scale(glm::mat4(1.0f),glm::vec3(1.0f,1.0f,1.0f)), glm::radians(45.0f),glm::vec3(1.0f,1.0f,0.0f));
   //view = glm::lookAt(glm::vec3(0.0f,0.0f,3.0f), glm::vec3(0.0f,0.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f));
   model = glm::mat4(1.0f);
-  projection = glm::perspective(glm::radians(45.0f), (float)2000 / (float)2000, 0.1f, 100.0f);
+  projection = glm::perspective(glm::radians(45.0f), (float)1000 / (float)1000, 0.1f, 100.0f);
 
 
   float vertices[] = {

@@ -13,8 +13,10 @@ include_directories(includes)
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 add_executable(Visual3D ${SOURCES} src/glad.c)
+add_subdirectory(lib/glfw-3.3.8)
 
-#find_package(OpenGL REQUIRED)
-target_link_libraries(Visual3D glfw dl)
-#file(COPY resources DESTINATION /)
+target_link_libraries(Visual3D glfw)
 
+find_package(OpenGL REQUIRED)
+target_link_libraries(Visual3D OpenGL::GL)
+file(COPY resources DESTINATION /)

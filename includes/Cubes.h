@@ -2,7 +2,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <Vector>
+#include <vector>
 
 enum blocktype{
     Wood,

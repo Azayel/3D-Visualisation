@@ -3,8 +3,8 @@
 #include "../includes/Camera.h"
 
 #include <memory>
-#include <Vector>
-#include <String>
+#include <vector>
+#include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

@@ -139,18 +139,7 @@ void CubeRenderer::on_initialize(std::string vertexfn, std::string fragmentfn, s
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(5*sizeof(float)));
   glEnableVertexAttribArray(2);
 
-  glUseProgram(RayShader->getID());
-  glGenVertexArrays(1, &rVAO);
-  glGenBuffers(1, &rVBO);
-  glBindVertexArray(rVAO);
-  glBindBuffer(GL_ARRAY_BUFFER, rVBO);
-  glBufferData(GL_ARRAY_BUFFER, rays.size() * sizeof(float), rays.data(), GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3*sizeof(float)));
-  glEnableVertexAttribArray(1);
+  
 }
 
 void CubeRenderer::draw() {
@@ -181,23 +170,6 @@ void CubeRenderer::draw() {
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
   }
-
-  glUseProgram(RayShader->getID());
-
-  model = glm::mat4(1.0f);
-  
-  uniformLocation = glGetUniformLocation(RayShader->getID(), "model");
-  glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(model));
-  
-  uniformLocation = glGetUniformLocation(RayShader->getID(), "view");
-  glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(my_camera.get()->get_view_matrix()));
-
-  uniformLocation = glGetUniformLocation(RayShader->getID(), "projection");
-  glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
-
-  glBindVertexArray(rVAO);
-
-  glDrawArrays(GL_LINES, 0, rays.size());
 
 
     
@@ -296,20 +268,14 @@ bool AABB1(const glm::vec3& local_ray_origin, const glm::vec3& local_ray_directi
 }
 
 
-void CubeRenderer::insert_ray(glm::vec3 from, glm::vec3 to){
-  
-  glBindVertexArray(rVAO);
-  glBindBuffer(GL_ARRAY_BUFFER, rVBO);
-  rays.insert(rays.end(), {from.x, from.y , from.z, 0.0f, 0.0f, 0.0f, to.x,to.y,to.z, 0.0f,0.0f,0.0f});
-  glBufferData(GL_ARRAY_BUFFER, rays.size() * sizeof(float), rays.data(), GL_STATIC_DRAW);
-  std::cout << "Size: " << rays.size() << "\n";
-  glBindVertexArray(0);
+void CubeRenderer::cast_ray(glm::vec3 from, glm::vec3 to){
+ 
 
+  
   glm::vec3 direction = my_camera.get()->c_view_target;
   //cubes is translation of the original cube
-  float s_distance=-1;
+  
   glm::vec3 cubePos;
-  bool first = false;
   for(glm::vec3 pos: cubes){
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, pos);

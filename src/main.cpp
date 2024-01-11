@@ -14,6 +14,7 @@
 #include "../includes/Shader.h"
 #include "../includes/vloop.h"
 #include "../includes/Camera.h"
+#include "../includes/RayRenderer.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -28,6 +29,7 @@ std::shared_ptr<Camera> myCamera;
 
 GLFWwindow *window;
 CubeRenderer crender;
+RayRenderer ray_render;
 
 // SCREEN WIDTH AND HEIGHT
 
@@ -79,7 +81,11 @@ bool initialize_window_components() {
   return true;
 }
 
-void draw() { crender.draw(); }
+void draw() { 
+  
+  crender.draw(); 
+  ray_render.draw();
+}
 
 int main() {
   // glfw: initialize and configure
@@ -97,11 +103,12 @@ int main() {
   myShader = std::unique_ptr<Shader>(new Shader("../resources/VertexShader.glsl", "../resources/FramgmentShader.glsl"));
 
   crender.on_initialize("../resources/VertexShader.glsl", "../resources/FramgmentShader.glsl", myCamera);
-
+  ray_render.on_initialize("../resources/RayVertexShader.glsl", "../resources/RayFragmentShader.glsl", myCamera);
   
   // uncomment this call to draw in wireframe polygons.
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glEnable(GL_DEPTH_TEST);  
+  
 
   // render loop
   // -----------
@@ -117,8 +124,8 @@ int main() {
     
     // render
     // ------
-    //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -136,6 +143,7 @@ int main() {
   //de-allocate all resources once they've outlived their purpose:
   // ------------------------------------------------------------------------
   crender.destroy_cuberenderer();
+  ray_render.destroy_rays();
   // glfw: terminate, clearing all previously allocated GLFW resources.
   // ------------------------------------------------------------------
   glfwTerminate();
@@ -229,6 +237,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
         std::cout << "Clicked Ray From Point X: " << myCamera.get()->get_camera_position().x << " Y: " << myCamera.get()->get_camera_position().y << " Z: " << myCamera.get()->get_camera_position().z << " To Point X: " << to_point.x << " Y: " << to_point.y << " z: " << to_point.z << "\n";
 
-        crender.insert_ray(myCamera.get()->get_camera_position(),to_point);
+        crender.cast_ray(myCamera.get()->get_camera_position(),to_point);
+        ray_render.insert_ray(myCamera.get()->get_camera_position(),to_point);
     }
 }

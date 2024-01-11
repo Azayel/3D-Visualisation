@@ -1,0 +1,13 @@
+------TODO----------
+
+
+(1) Refactor Code into functions to allow better reading style and allow better implementation of additional Code.
+  (1.1) MAKE IT MORE READABLE ESPECIALLY THE CUBERENDERER!!!!!!!!
+(2) Add Cube Struct to store Data
+  (2.1) Should store 6 Pointers to Next Cube Objects? // Need More Information for better understanding
+    (2.1.1) Usage: Better Draw Calling. Cube face should not be drawn if it is obstructed by another face/cube
+    (2.1.2) Pro: Better Performance. We Dont need to draw unnecessary faces. Better Draw calls.
+    (2.1.3) Cons: We need to keep track of every new cube added and its neighbours. We also need to update the neighbours list
+                  Before adding cube we need to determine exactly which cubes face will be obstructed. Performance Heavy?
+    (2.1.4) Add an texture atlas to implement different textures. Created cubes need to be initialized with an enum of a type of             texture you want to use.
+    

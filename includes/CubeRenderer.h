@@ -42,7 +42,7 @@ public:
     return projection;
   }
 
-  void insert_ray(glm::vec3 from, glm::vec3 to);
+  void cast_ray(glm::vec3 from, glm::vec3 to);
 
 };
 

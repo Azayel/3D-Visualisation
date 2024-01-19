@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-
+//Camera followed tutorial= https://learnopengl.com/Getting-started/Camera
 enum Camera_Movement {
     FORWARD,
     BACKWARD,

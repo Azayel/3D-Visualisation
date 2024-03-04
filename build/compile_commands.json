@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/asayel/Documents/git/3D-Visualisation/build",
+  "command": "/usr/bin/c++  -I/home/asayel/Documents/git/3D-Visualisation/includes/glad -I/home/asayel/Documents/git/3D-Visualisation/includes/KHR -I/home/asayel/Documents/git/3D-Visualisation/includes/glm -I/home/asayel/Documents/git/3D-Visualisation/includes -g -o CMakeFiles/Visual3D.dir/src/CubeRenderer.cpp.o -c /home/asayel/Documents/git/3D-Visualisation/src/CubeRenderer.cpp",
+  "file": "/home/asayel/Documents/git/3D-Visualisation/src/CubeRenderer.cpp",
+  "output": "CMakeFiles/Visual3D.dir/src/CubeRenderer.cpp.o"
+},
+{
+  "directory": "/home/asayel/Documents/git/3D-Visualisation/build",
+  "command": "/usr/bin/c++  -I/home/asayel/Documents/git/3D-Visualisation/includes/glad -I/home/asayel/Documents/git/3D-Visualisation/includes/KHR -I/home/asayel/Documents/git/3D-Visualisation/includes/glm -I/home/asayel/Documents/git/3D-Visualisation/includes -g -o CMakeFiles/Visual3D.dir/src/Cubes.cpp.o -c /home/asayel/Documents/git/3D-Visualisation/src/Cubes.cpp",
+  "file": "/home/asayel/Documents/git/3D-Visualisation/src/Cubes.cpp",
+  "output": "CMakeFiles/Visual3D.dir/src/Cubes.cpp.o"
+},
+{
+  "directory": "/home/asayel/Documents/git/3D-Visualisation/build",
+  "command": "/usr/bin/c++  -I/home/asayel/Documents/git/3D-Visualisation/includes/glad -I/home/asayel/Documents/git/3D-Visualisation/includes/KHR -I/home/asayel/Documents/git/3D-Visualisation/includes/glm -I/home/asayel/Documents/git/3D-Visualisation/includes -g -o CMakeFiles/Visual3D.dir/src/RayRenderer.cpp.o -c /home/asayel/Documents/git/3D-Visualisation/src/RayRenderer.cpp",
+  "file": "/home/asayel/Documents/git/3D-Visualisation/src/RayRenderer.cpp",
+  "output": "CMakeFiles/Visual3D.dir/src/RayRenderer.cpp.o"
+},
+{
+  "directory": "/home/asayel/Documents/git/3D-Visualisation/build",
+  "command": "/usr/bin/c++  -I/home/asayel/Documents/git/3D-Visualisation/includes/glad -I/home/asayel/Documents/git/3D-Visualisation/includes/KHR -I/home/asayel/Documents/git/3D-Visualisation/includes/glm -I/home/asayel/Documents/git/3D-Visualisation/includes -g -o CMakeFiles/Visual3D.dir/src/Shader.cpp.o -c /home/asayel/Documents/git/3D-Visualisation/src/Shader.cpp",
+  "file": "/home/asayel/Documents/git/3D-Visualisation/src/Shader.cpp",
+  "output": "CMakeFiles/Visual3D.dir/src/Shader.cpp.o"
+},
+{
+  "directory": "/home/asayel/Documents/git/3D-Visualisation/build",
+  "command": "/usr/bin/c++  -I/home/asayel/Documents/git/3D-Visualisation/includes/glad -I/home/asayel/Documents/git/3D-Visualisation/includes/KHR -I/home/asayel/Documents/git/3D-Visualisation/includes/glm -I/home/asayel/Documents/git/3D-Visualisation/includes -g -o CMakeFiles/Visual3D.dir/src/main.cpp.o -c /home/asayel/Documents/git/3D-Visualisation/src/main.cpp",
+  "file": "/home/asayel/Documents/git/3D-Visualisation/src/main.cpp",
+  "output": "CMakeFiles/Visual3D.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/asayel/Documents/git/3D-Visualisation/build",
+  "command": "/usr/bin/cc  -I/home/asayel/Documents/git/3D-Visualisation/includes/glad -I/home/asayel/Documents/git/3D-Visualisation/includes/KHR -I/home/asayel/Documents/git/3D-Visualisation/includes/glm -I/home/asayel/Documents/git/3D-Visualisation/includes -g -o CMakeFiles/Visual3D.dir/src/glad.c.o -c /home/asayel/Documents/git/3D-Visualisation/src/glad.c",
+  "file": "/home/asayel/Documents/git/3D-Visualisation/src/glad.c",
+  "output": "CMakeFiles/Visual3D.dir/src/glad.c.o"
+}
+]

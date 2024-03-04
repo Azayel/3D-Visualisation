@@ -1,6 +1,7 @@
 #pragma once
 #include "../includes/Shader.h"
 #include "../includes/Camera.h"
+#include "../includes/Cubes.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -12,6 +13,8 @@
 class CubeRenderer {
   std::unique_ptr<Shader> CubeShader;
   std::unique_ptr<Shader> RayShader;
+  std::unique_ptr<Chunck> myChunck;
+
   unsigned int VAO, VBO;
   unsigned int rVAO, rVBO;
   glm::mat4 projection;
@@ -21,6 +24,7 @@ class CubeRenderer {
   unsigned int textureID;
   std::vector<float> rays;
   glm::vec3 lightPosition = glm::vec3(0.0f,10.0f,0.0f);
+  
 
 std::vector<glm::vec3> cubes;
 

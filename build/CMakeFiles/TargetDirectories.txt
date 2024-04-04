@@ -1,0 +1,3 @@
+C:/Users/TryCa/Documents/Git/3D-Visualisation/build/CMakeFiles/Visual3D.dir
+C:/Users/TryCa/Documents/Git/3D-Visualisation/build/CMakeFiles/edit_cache.dir
+C:/Users/TryCa/Documents/Git/3D-Visualisation/build/CMakeFiles/rebuild_cache.dir

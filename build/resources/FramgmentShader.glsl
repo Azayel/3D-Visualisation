@@ -10,9 +10,7 @@ uniform vec3 viewPos;
 
 
 void main()
-{   
-
-    //Shader took from = https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
+{
     //FragColor = vec4(VertexColor.xyz, 0.0);
     vec3 color = texture(text,TextCoordinates).rgb;
      // ambient

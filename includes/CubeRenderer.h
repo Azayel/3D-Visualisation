@@ -24,7 +24,7 @@ class CubeRenderer {
   unsigned int textureID;
   std::vector<float> rays;
   glm::vec3 lightPosition = glm::vec3(0.0f,10.0f,0.0f);
-  
+  float t_minimum = 99999;
 
 std::vector<glm::vec3> cubes;
 

@@ -3,11 +3,13 @@
 #include "../includes/Cubes.h"
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
-
+#include <limits>
 #include <iostream>
 #include <memory>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+float t_minimum = 9999;
 
 static unsigned int loadTexture(char const *path) {
   unsigned int textureID;
@@ -111,7 +113,7 @@ void CubeRenderer::on_initialize(std::string vertexfn, std::string fragmentfn,
   };
 
   // Just generating cubes directly
-  gen_cubes(10);
+  //gen_cubes(10);
 
   // Generating a chung
 
@@ -275,6 +277,51 @@ bool AABB1(const glm::vec3 &local_ray_origin,
   return true;
 }
 
+bool AABB2(const glm::vec3 &local_ray_origin,
+           const glm::vec3 &local_ray_direction, glm::vec3 min_bound,
+           glm::vec3 max_bound) {
+
+  // Compute t-values for each pair of planes
+  //  Point = Origin + t * direction | - Origin
+  //  Point - Origin = t * direction | : Directopm
+  //  (Point -  Origin) / Directiom = t
+  glm::vec3 t_min = (min_bound - local_ray_origin) / local_ray_direction;
+  glm::vec3 t_max = (max_bound - local_ray_origin) / local_ray_direction;
+
+  // WHY?
+  float t_enter =
+      glm::max(glm::max(glm::min(t_min.x, t_max.x), glm::min(t_min.y, t_max.y)),
+               glm::min(t_min.z, t_max.z));
+  float t_exit =
+      glm::min(glm::min(glm::max(t_min.x, t_max.x), glm::max(t_min.y, t_max.y)),
+               glm::max(t_min.z, t_max.z));
+
+  // RAY INTERSECTS UNDER THIS CONDITION. But WYH?
+  bool has_intersection = t_enter < t_exit;
+  
+  if(has_intersection && (t_minimum < 0.0f || t_enter < t_minimum)){
+    t_minimum = t_enter;
+  }
+
+  return has_intersection;
+
+}
+
+
+Cube find_intersected_cube(glm::vec3 &origin, glm::vec3 &direction, std::vector<Cube> &cubes ){
+  Cube nearestCube;
+  float nearestDistance = std::numeric_limits<float>::infinity();
+  
+  for (const Cube& c : cubes) {
+    auto bounds = c.getBounds();
+    if(AABB2(origin, direction, bounds.first , bounds.second)){
+      nearestCube = c;
+    }
+  }
+
+  return nearestCube;
+}
+
 // TODO: Universal Function for multiple Chuncks. SEGMENTATION FAULT WHEN
 // TRIGGERING TO MANY CUBES AT THE SAME TIME!
 void CubeRenderer::cast_ray(glm::vec3 from, glm::vec3 to) {
@@ -282,6 +329,7 @@ void CubeRenderer::cast_ray(glm::vec3 from, glm::vec3 to) {
   // cubes is translation of the original cube
 
   glm::vec3 cubePos;
+  /*
   for (Cube c : myChunck->stored_cubes) {
 
     glm::vec3 pos = c.position;
@@ -294,30 +342,11 @@ void CubeRenderer::cast_ray(glm::vec3 from, glm::vec3 to) {
     glm::vec3 local_ray_direction =
         modelInverse * glm::vec4(direction.x, direction.y, direction.z, 0.0f);
 
-    bool flag = false;
-    // for each side
-    if (AABB(local_ray_origin, local_ray_direction)) {
-      // Perform more accurate intersection tests with the cube's faces
-      // ...
-      std::cout << "intersection!\n";
-      flag = true;
-      // If there is an intersection, update your closest_cube and
-      // closest_distance variables
-      // ...
-      if (flag) {
-        cubePos = pos;
-      }
-    }
-    if (flag) {
-      for (int i = 0; i < myChunck->stored_cubes.size(); i++) {
-        if (cubePos == myChunck->stored_cubes[i].position) {
-          cubes[i] = glm::vec3(myChunck->stored_cubes[i].position.x,
-                               myChunck->stored_cubes[i].position.y += 1,
-                               myChunck->stored_cubes[i].position.z);
-        }
-      }
-    }
+  
   }
+  */
+  auto ca = find_intersected_cube(from,to,(myChunck->stored_cubes));
+  std::cout << "Cube found:  " << ca.position.x << " " << ca.position.y << " " << ca.position.z << std::endl;
 }
 
 void CubeRenderer::destroy_cuberenderer() {
@@ -325,4 +354,5 @@ void CubeRenderer::destroy_cuberenderer() {
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
   glDeleteProgram(CubeShader->getID());
+
 }

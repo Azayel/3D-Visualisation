@@ -2,7 +2,6 @@
 #include <glad/glad.h>
 
 #include <string>
-
 class Shader {
 
   void checkCompileErrors(unsigned int shader, std::string type);
